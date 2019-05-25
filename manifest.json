@@ -16,7 +16,7 @@
 
     "content_scripts" : [
         {
-            "matches": ["https://youtube.com//*"],
+            "matches": ["https://facebook.com/groups/*/members/"],
             "js": ["content.js"]
         }
     ],

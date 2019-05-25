@@ -2,12 +2,12 @@ var sheetUrl = "https://script.google.com/macros/s/AKfycbxJHG59J6LwmJO-cXKUbOjEf
 
 chrome.runtime.onInstalled.addListener(function() {
     chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
-        console.log("Check if on YouTube.com");
+        console.log("Check if on Facebook.com");
         chrome.declarativeContent.onPageChanged.addRules([
             {
                 conditions: [
                     new chrome.declarativeContent.PageStateMatcher({
-                        pageUrl: { urlContains: 'youtube.com' },
+                        pageUrl: { urlContains: 'facebook.com/groups/' },
                     })
                 ],
                 // And shows the extension's page action.
@@ -17,15 +17,30 @@ chrome.runtime.onInstalled.addListener(function() {
     });
 });
 
-var contextMenuItem = {
+var grabMenuItem = {
     "id": "grabResults",
     "title": "Grab Results",
-    "contexts": ["all"]
+    "contexts": ["all"],
 };
+   
+   
+var scrollMenuItem = {
+    "id": "scroll",
+    "title": "Scroll To Bottom",
+    "contexts": ["all"]
+}
+
+var stopScrollMenuItem = { 
+    "id": "stopScroll",
+    "title": "Stop Scrolling",
+    "contexts": ["all"]
+}
 
 
 chrome.contextMenus.removeAll(function() {
-    chrome.contextMenus.create(contextMenuItem);
+    chrome.contextMenus.create(grabMenuItem);
+    chrome.contextMenus.create(scrollMenuItem);
+    chrome.contextMenus.create(stopScrollMenuItem);
 });
 
 
@@ -40,7 +55,14 @@ chrome.contextMenus.onClicked.addListener(function(clickData){
     if (clickData.menuItemId == "grabResults") {
             scrape_it();
         } 
+    else if (clickData.menuItemId == "scroll") {
+            scrollToBottom();
+        } 
+    else if (clickData.menuItemId == "stopScroll") {
+            stopScroll();
+    }
         });
+
         
 chrome.commands.onCommand.addListener(function(command) {
     scrape_it();
@@ -68,5 +90,3 @@ chrome.runtime.onMessage.addListener(
             sendResponse({farewell: "got something."});
         }
     });
-
-
