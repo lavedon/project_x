@@ -1,3 +1,5 @@
+var sheetUrl = "https://script.google.com/macros/s/AKfycbxJHG59J6LwmJO-cXKUbOjEfkVv_xEZdfb9AqmpOCBZeqPqhhU/exec"
+
 chrome.runtime.onInstalled.addListener(function() {
     chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
         console.log("Check if on YouTube.com");
@@ -21,9 +23,11 @@ var contextMenuItem = {
     "contexts": ["all"]
 };
 
+
 chrome.contextMenus.removeAll(function() {
     chrome.contextMenus.create(contextMenuItem);
 });
+
 
 function scrape_it() {
         chrome.tabs.executeScript({
@@ -42,27 +46,27 @@ chrome.commands.onCommand.addListener(function(command) {
     scrape_it();
 });
 
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    if (request.contentScriptQuery == "getdata") {
-        var url = request.url;
-        fetch(url)
-            .then(response => response.text())
-            .then(response => sendResponse(response))
-            .catch()
-        return true;
-    }
-    if (request.contentScriptQuery == "postData") {
-        fetch(request.url, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
-                'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
-            },
-            body: 'result=' + request.data
-        })
-            .then(response => response.json())
-            .then(response => sendResponse(response))
-            .catch(error => console.log('Error:', error));
-        return true;
-    }
-});
+// test message passing
+chrome.runtime.onMessage.addListener(
+    function(request, sender, sendResponse) {
+        console.log(sender.tab ?
+            "from a content script:" + sender.tab.url : 
+            "from the extension");
+        if (request.greeting == "hello") {
+            sendResponse({farewell: "goodbye"});
+        }
+        else if (request.cat == "Mommy Cat") { 
+            sendResponse({farewell: "Mommy Cat received"}); 
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", sheetUrl);
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhr.send(JSON.stringify(request));
+            console.log("Sent POST to sheet");
+
+        }
+        else {
+            sendResponse({farewell: "got something."});
+        }
+    });
+
+
