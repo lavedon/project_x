@@ -1,5 +1,7 @@
 var sheetUrl = "https://script.google.com/macros/s/AKfycbxJHG59J6LwmJO-cXKUbOjEfkVv_xEZdfb9AqmpOCBZeqPqhhU/exec"
 
+
+
 chrome.runtime.onInstalled.addListener(function() {
     chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
         console.log("Check if on Facebook.com");
@@ -44,24 +46,29 @@ chrome.contextMenus.removeAll(function() {
 });
 
 
-function scrape_it() {
-        chrome.tabs.executeScript({
-            file: "content.js"
-            });
-        }
-
 
 chrome.contextMenus.onClicked.addListener(function(clickData){
+    chrome.tabs.query({currentWindow: true, active: true }, function(tabs) {
     if (clickData.menuItemId == "grabResults") {
-            scrape_it();
+        console.log("grabResults selected");
+        chrome.tabs.sendMessage(tabs[0], {action: "grabResults"}, function(response) {
+            return true;
+        });
         } 
     else if (clickData.menuItemId == "scroll") {
-            scrollToBottom();
+        console.log("scroll selected");
+        chrome.tabs.sendMessage(tabs[0], {action: "scroll"}, function(response) {
+            return true;
+        });
         } 
     else if (clickData.menuItemId == "stopScroll") {
-            stopScroll();
-    }
+        console.log("stopScroll selected");
+        chrome.tabs.sendMessage(tabs[0], {action: "stopScroll"}, function(response) {
+            return true;
         });
+        }}
+)
+});
 
         
 chrome.commands.onCommand.addListener(function(command) {

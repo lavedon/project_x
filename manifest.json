@@ -17,12 +17,13 @@
     "content_scripts" : [
         {
             "matches": ["https://facebook.com/groups/*/members/"],
-            "js": ["content.js"]
+            "js": ["content.js"],
+            "run_at" : "document_end"
         }
     ],
     "background" : {
         "scripts" : ["background.js"],
-        "persistent" : false
+        "persistent" : true
     },
     "permissions" : [
         "declarativeContent", 
