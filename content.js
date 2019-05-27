@@ -1,22 +1,44 @@
+var scrolling = true;
+var data = {};
+
 var wait = ms => new Promise((r, j) => setTimeout(r, ms));
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     console.log("Got message from background.js");
     if (request.message == "scroll") { 
-        sendResponse({farewell: "Going to scroll now."});
+        sendResponse({received: "Going to scroll now."});
         console.log("got message to scroll");
         scroll();
+    } else if (request.message == "stopScroll") {
+        sendResponse({received: "Going to stop scrolling now."});
+        console.log("message to Stop Scrolling");
+        stopScroll();
+    } else if (request.message == "grabResults") {
+        sendResponse({received: "Going to scrape data now."});
+        console.log("message to scrape data.");
+        grabResults();
     }
 
 });
 
-
 async function scroll() { 
     console.log("scroll called");
-    for (let i = 0; i < 10; i++) {
-        console.log("Scroll loop # " + i);
+    scrolling = true;
+    while (scrolling == true) {
+        console.log("Scrolling forever");
         window.scrollTo(0, document.body.scrollHeight);
         await wait(2000);
     }
 
+}
+
+function stopScroll() {
+    console.log("Stop scroll called");
+    scrolling = false;
+
+}
+
+function grabResults() {
+    console.log("grabResults() called from content script.");
+    chrome.runtime.sendMessage({cat: "Mommy Cat"});
 }

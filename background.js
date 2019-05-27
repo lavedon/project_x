@@ -52,18 +52,31 @@ chrome.contextMenus.onClicked.addListener((clickData) => {
         console.log("MenuItem scroll selected");
         chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
             chrome.tabs.sendMessage(tabs[0].id, {message: "scroll"},
-                (response) => console.log(response.farewell));
+                (response) => console.log(response.received));
             
     });
-    }
+    } 
+    else if (clickData.menuItemId == "stopScroll") {
+        console.log("MenuItem scroll selected");
+        chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+            chrome.tabs.sendMessage(tabs[0].id, {message: "stopScroll"},
+                (response) => console.log(response.received));
+            
+    });
+    } 
+    else if (clickData.menuItemId == "sendIt") {
+        console.log("MenuItem scroll selected");
+        chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+            chrome.tabs.sendMessage(tabs[0].id, {message: "sendIt"},
+                (response) => console.log(response.received));
+            
+    });
+    } 
 
 });
 
 
         
-chrome.commands.onCommand.addListener(function(command) {
-    scrape_it();
-});
 
 // test message passing
 chrome.runtime.onMessage.addListener(
@@ -72,10 +85,10 @@ chrome.runtime.onMessage.addListener(
             "from a content script:" + sender.tab.url : 
             "from the extension");
         if (request.greeting == "hello") {
-            sendResponse({farewell: "goodbye"});
+            sendResponse({received: "goodbye"});
         }
         else if (request.cat == "Mommy Cat") { 
-            sendResponse({farewell: "Mommy Cat received"}); 
+            sendResponse({received: "Mommy Cat received"}); 
             var xhr = new XMLHttpRequest();
             xhr.open("POST", sheetUrl);
             xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
@@ -84,6 +97,6 @@ chrome.runtime.onMessage.addListener(
 
         }
         else {
-            sendResponse({farewell: "got something."});
+            sendResponse({received: "got something."});
         }
     });
