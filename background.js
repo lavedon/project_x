@@ -38,7 +38,7 @@ var stopScrollMenuItem = {
 }
 
 
-chrome.contextMenus.removeAll(function() {
+chrome.contextMenus.removeAll(() => {
     chrome.contextMenus.create(grabMenuItem);
     chrome.contextMenus.create(scrollMenuItem);
     chrome.contextMenus.create(stopScrollMenuItem);
@@ -64,10 +64,10 @@ chrome.contextMenus.onClicked.addListener((clickData) => {
             
     });
     } 
-    else if (clickData.menuItemId == "sendIt") {
+    else if (clickData.menuItemId == "grabResults") {
         console.log("MenuItem scroll selected");
         chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
-            chrome.tabs.sendMessage(tabs[0].id, {message: "sendIt"},
+            chrome.tabs.sendMessage(tabs[0].id, {message: "grabResults"},
                 (response) => console.log(response.received));
             
     });
@@ -88,6 +88,7 @@ chrome.runtime.onMessage.addListener(
             sendResponse({received: "goodbye"});
         }
         else if (request.cat == "Mommy Cat") { 
+            console.log("Mommy Cat received from content script.");
             sendResponse({received: "Mommy Cat received"}); 
             var xhr = new XMLHttpRequest();
             xhr.open("POST", sheetUrl);

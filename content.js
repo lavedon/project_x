@@ -38,7 +38,14 @@ function stopScroll() {
 
 }
 
-function grabResults() {
+async function grabResults() {
+    var blocks = document.getElementById("groupsMemberBrowserContent");
+    var profiles = blocks.getElementsByClassName("uiProfileBlockContent")
+    
+// profiles is each profile block which includes name, joined date, 
+    // and sometimes employment and education.
+
     console.log("grabResults() called from content script.");
-    chrome.runtime.sendMessage({cat: "Mommy Cat"});
+    chrome.runtime.sendMessage({cat: "Mommy Cat"}, 
+        (response) => response.received);
 }
