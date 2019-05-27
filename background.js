@@ -48,36 +48,16 @@ chrome.contextMenus.removeAll(function() {
 
 chrome.contextMenus.onClicked.addListener((clickData) => {
 
-    if (clickData.menuItemId == "grabResults") {
-        console.log("Grab Menu Item selected");
+    if (clickData.menuItemId == "scroll") {
+        console.log("MenuItem scroll selected");
         chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
-            console.warn("Current tabs are" + tabs);
-            chrome.tabs.sendMessage(tabs[0].id, {message: "grabResults"},
+            chrome.tabs.sendMessage(tabs[0].id, {message: "scroll"},
                 (response) => console.log(response.farewell));
             
     });
     }
 
 });
-
-         
-/*
-    else if (clickData.menuItemId == "scroll") {
-        console.log("scroll selected");
-        console.log("Tab 0 is " + tabs[0]);
-        chrome.tabs.sendMessage(tabs[0], {action: "scroll"}, function(response) {
-            return true;
-        });
-        } 
-    else if (clickData.menuItemId == "stopScroll") {
-        console.log("stopScroll selected");
-        console.log("Tab 0 is " + tabs[0]);
-        chrome.tabs.sendMessage(tabs[0], {action: "stopScroll"}, function(response) {
-            return true;
-        });
-        }}
-)
-*/
 
 
         
