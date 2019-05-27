@@ -1,10 +1,9 @@
 var sheetUrl = "https://script.google.com/macros/s/AKfycbxJHG59J6LwmJO-cXKUbOjEfkVv_xEZdfb9AqmpOCBZeqPqhhU/exec"
-
+var currentTab;
 
 
 chrome.runtime.onInstalled.addListener(function() {
     chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
-        console.log("Check if on Facebook.com");
         chrome.declarativeContent.onPageChanged.addRules([
             {
                 conditions: [
@@ -47,28 +46,39 @@ chrome.contextMenus.removeAll(function() {
 
 
 
-chrome.contextMenus.onClicked.addListener(function(clickData){
-    chrome.tabs.query({currentWindow: true, active: true }, function(tabs) {
+chrome.contextMenus.onClicked.addListener((clickData) => {
+
     if (clickData.menuItemId == "grabResults") {
-        console.log("grabResults selected");
-        chrome.tabs.sendMessage(tabs[0], {action: "grabResults"}, function(response) {
-            return true;
-        });
-        } 
+        console.log("Grab Menu Item selected");
+        chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+            console.warn("Current tabs are" + tabs);
+            chrome.tabs.sendMessage(tabs[0].id, {message: "grabResults"},
+                (response) => console.log(response.farewell));
+            
+    });
+    }
+
+});
+
+         
+/*
     else if (clickData.menuItemId == "scroll") {
         console.log("scroll selected");
+        console.log("Tab 0 is " + tabs[0]);
         chrome.tabs.sendMessage(tabs[0], {action: "scroll"}, function(response) {
             return true;
         });
         } 
     else if (clickData.menuItemId == "stopScroll") {
         console.log("stopScroll selected");
+        console.log("Tab 0 is " + tabs[0]);
         chrome.tabs.sendMessage(tabs[0], {action: "stopScroll"}, function(response) {
             return true;
         });
         }}
 )
-});
+*/
+
 
         
 chrome.commands.onCommand.addListener(function(command) {

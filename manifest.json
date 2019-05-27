@@ -16,9 +16,9 @@
 
     "content_scripts" : [
         {
-            "matches": ["https://facebook.com/groups/*/members/"],
+            "matches": ["<all_urls>"],
             "js": ["content.js"],
-            "run_at" : "document_end"
+            "run_at" : "document_idle"
         }
     ],
     "background" : {
