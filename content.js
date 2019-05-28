@@ -1,5 +1,5 @@
 var scrolling = true;
-var data = {};
+var data = [];
 
 var wait = ms => new Promise((r, j) => setTimeout(r, ms));
 
@@ -39,10 +39,21 @@ function stopScroll() {
 }
 
 async function grabResults() {
-    var blocks = document.getElementById("groupsMemberBrowserContent");
-    var profiles = blocks.getElementsByClassName("uiProfileBlockContent")
+    let blocks = document.getElementById("groupsMemberBrowserContent");
+    let profiles = blocks.getElementsByClassName("uiProfileBlockContent");
+    let name = profiles[5].getElementsByTagName("a")[0].innerText;
+    let profileLinkDirty = profiles[5].getElementsByTagName("a")[0].innerHTML;
+
+    // use below RegEx to get the important part of the profile
+    // (?:(?!\?).)*
+    // Only select the first part from the array
     
-// profiles is each profile block which includes name, joined date, 
+
+    //  @TODO Add what group they are from to each object?
+    //  Get from current tab URL?
+    //
+    //
+    // profiles is each profile block which includes name, joined date, 
     // and sometimes employment and education.
 
     console.log("grabResults() called from content script.");
