@@ -87,17 +87,13 @@ chrome.runtime.onMessage.addListener(
         if (request.greeting == "hello") {
             sendResponse({received: "goodbye"});
         }
-        else if (request.cat == "Mommy Cat") { 
-            console.log("Mommy Cat received from content script.");
-            sendResponse({received: "Mommy Cat received"}); 
+        else { 
+            console.log("data received.");
+            sendResponse({received: "data received"}); 
             var xhr = new XMLHttpRequest();
             xhr.open("POST", sheetUrl);
             xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
             xhr.send(JSON.stringify(request));
             console.log("Sent POST to sheet");
-
-        }
-        else {
-            sendResponse({received: "got something."});
         }
     });

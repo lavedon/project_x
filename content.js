@@ -1,5 +1,6 @@
 var scrolling = true;
 var data = [];
+var jsonData = {};
 
 var wait = ms => new Promise((r, j) => setTimeout(r, ms));
 
@@ -39,15 +40,22 @@ function stopScroll() {
 }
 
 async function grabResults() {
-    let blocks = document.getElementById("groupsMemberBrowserContent");
+    let block = document.getElementById("groupsMemberBrowserContent");
     let profiles = blocks.getElementsByClassName("uiProfileBlockContent");
-    let name = profiles[5].getElementsByTagName("a")[0].innerText;
-    let profileLinkDirty = profiles[5].getElementsByTagName("a")[0].innerHTML;
+// REDO this    let profileLinkDirty = profiles[5].getElementsByTagName("a")[0].innerHTML;
 
     // use below RegEx to get the important part of the profile
     // (?:(?!\?).)*
     // Only select the first part from the array
     
+    for (let i = 0; i < profiles.length; i++) {
+        let name = profiles[i].getElementsByTagName("a")[0].innerText;
+        console.log(name);
+        data.push({name});
+    }
+    console.log("Data array populated.");
+    console.log(data);
+    jsonData = JSON.stringify(data);
 
     //  @TODO Add what group they are from to each object?
     //  Get from current tab URL?
@@ -57,6 +65,7 @@ async function grabResults() {
     // and sometimes employment and education.
 
     console.log("grabResults() called from content script.");
-    chrome.runtime.sendMessage({cat: "Mommy Cat"}, 
+    chrome.runtime.sendMessage(jsonData, 
         (response) => response.received);
+
 }
