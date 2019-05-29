@@ -41,7 +41,7 @@ function stopScroll() {
 
 async function grabResults() {
     let block = document.getElementById("groupsMemberBrowserContent");
-    let profiles = blocks.getElementsByClassName("uiProfileBlockContent");
+    let profiles = block.getElementsByClassName("uiProfileBlockContent");
 // REDO this    let profileLinkDirty = profiles[5].getElementsByTagName("a")[0].innerHTML;
 
     // use below RegEx to get the important part of the profile
