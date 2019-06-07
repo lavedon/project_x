@@ -23,17 +23,24 @@ for(var [key,val] in splitNames){
 /*
   Logger.log("split names for " + splitNames[key]);
   Logger.log("type of " + typeof(splitNames[key]));
-  Logger.log("spliting the split name " + splitNames[key].split(":")[1].slice(0, -1));
-*/
   
-  names.push(splitNames[key].split(":")[1].slice(0, -1));
+ 
+  
+  
+  Logger.log("spliting the split name " + splitNames[key].split(":")[1].slice(1, -2));
+ */
+
+  
+  names.push(splitNames[key].split(":")[1].slice(1, -2));
   
 
 }
   
 
 var sheetNames = names.map(function (el) {
-    return [el];
+     el.replace("}", "");
+     
+     return [el];
   });
 
 
@@ -45,7 +52,7 @@ Logger.log("Now trying to write to sheet");
 
 
                                
-var range = sheet.getRange(2, 1, sheetNames.length, 1);
+var range = sheet.getRange(1, 1, sheetNames.length, 1);
  
 range.setValues(sheetNames);
 
