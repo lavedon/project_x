@@ -1,7 +1,10 @@
 function doPost(e) {
-var sheet = SpreadsheetApp.openById("1HVbmbCTf3TtT1_PQw5vNi7lCZhRjaW9SYWn8ha4yK90");
-var range = sheet.getRange("A1");
-range.setValue("testing!");
+// If you do not specify a sheet within the spreadsheet only a1notation will work in getRange
+var ss = SpreadsheetApp.openById("1HVbmbCTf3TtT1_PQw5vNi7lCZhRjaW9SYWn8ha4yK90");
+var sheet = ss.getSheets()[0];
+
+
+                       
   
 var names = [];
 
@@ -20,18 +23,31 @@ for(var [key,val] in splitNames){
 /*
   Logger.log("split names for " + splitNames[key]);
   Logger.log("type of " + typeof(splitNames[key]));
-  */
-  
   Logger.log("spliting the split name " + splitNames[key].split(":")[1].slice(0, -1));
-
+*/
   
   names.push(splitNames[key].split(":")[1].slice(0, -1));
-    }
-
-Logger.log("Length of names array");
-Logger.log(names.length);
   
-Logger.log("names are now");
-Logger.log(names);
+
+}
+  
+
+var sheetNames = names.map(function (el) {
+    return [el];
+  });
+
+
+    
+Logger.log("2d array of names are:");
+Logger.log(sheetNames);
+Logger.log("Length of sheetNames: " + sheetNames.length);
+Logger.log("Now trying to write to sheet");
+
+
+                               
+var range = sheet.getRange(2, 1, sheetNames.length, 1);
+ 
+range.setValues(sheetNames);
+
   
 }
