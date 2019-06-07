@@ -50,9 +50,10 @@ async function grabResults() {
     
     for (let i = 0; i < profiles.length; i++) {
         let name = profiles[i].getElementsByTagName("a")[0].innerText;
-        console.log(name);
-        data.push({name});
+        let facebookURL = profiles[i].querySelector("a").getAttribute("href");
+        data.push({name, facebookURL});
     }
+
     console.log("Data array populated.");
     console.log(data);
     jsonData = JSON.stringify(data);
