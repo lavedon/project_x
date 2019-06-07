@@ -42,15 +42,11 @@ function stopScroll() {
 async function grabResults() {
     let block = document.getElementById("groupsMemberBrowserContent");
     let profiles = block.getElementsByClassName("uiProfileBlockContent");
-// REDO this    let profileLinkDirty = profiles[5].getElementsByTagName("a")[0].innerHTML;
-
-    // use below RegEx to get the important part of the profile
-    // (?:(?!\?).)*
-    // Only select the first part from the array
     
     for (let i = 0; i < profiles.length; i++) {
         let name = profiles[i].getElementsByTagName("a")[0].innerText;
-        let facebookURL = profiles[i].querySelector("a").getAttribute("href");
+        let dirtyFacebookURL = profiles[i].querySelector("a").getAttribute("href");
+        let facebookURL = dirtyFacebookURL.match(/.+?(?=\?)/);
         data.push({name, facebookURL});
     }
 
@@ -58,12 +54,6 @@ async function grabResults() {
     console.log(data);
     jsonData = JSON.stringify(data);
 
-    //  @TODO Add what group they are from to each object?
-    //  Get from current tab URL?
-    //
-    //
-    // profiles is each profile block which includes name, joined date, 
-    // and sometimes employment and education.
 
     console.log("grabResults() called from content script.");
     chrome.runtime.sendMessage(jsonData, 
