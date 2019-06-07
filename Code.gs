@@ -4,38 +4,34 @@ var range = sheet.getRange("A1");
 range.setValue("testing!");
   
 var names = [];
-  Logger.log("doPost called!");
-  //Return if null
+
+//Return if null
 if( e == undefined ) {
-    Logger.log("no data");
-    return HtmlService.createHtmlOutput("need data");
+  Logger.log("no data");
+  return HtmlService.createHtmlOutput("need data");
 }
 
-var params = JSON.stringify(e);
-var data = JSON.parse(e.postData.contents);
-Logger.log("data is, only 1 parse");
-Logger.log(data);
-  
-Logger.log("data keys are");
-Logger.log(Object.keys(data));
-  
-Logger.log("More parsing");
-var furtherData = JSON.parse(data);
-Logger.log("data is now:");
-Logger.log(furtherData);
-  
-Logger.log("furtherData keys are");
-Logger.log(Object.keys(furtherData));
-  
-  
-Object.keys(furtherData).forEach(function(name) {
-   Logger.log(Object.values(name));
-   names.push(Object.values(name));
-});
-  
-Logger.log(names);
-  
-return HtmlService.createHtmlOutput(params);
 
+var data = JSON.parse(e.postData.contents);
+var splitNames = data.split(",");
+
+
+for(var [key,val] in splitNames){
+/*
+  Logger.log("split names for " + splitNames[key]);
+  Logger.log("type of " + typeof(splitNames[key]));
+  */
+  
+  Logger.log("spliting the split name " + splitNames[key].split(":")[1].slice(0, -1));
+
+  
+  names.push(splitNames[key].split(":")[1].slice(0, -1));
+    }
+
+Logger.log("Length of names array");
+Logger.log(names.length);
+  
+Logger.log("names are now");
+Logger.log(names);
   
 }
