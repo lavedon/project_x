@@ -17,28 +17,57 @@ if( e == undefined ) {
 
 
 var data = JSON.parse(e.postData.contents);
+// Logger.log("data is: " + data);
   
 var splitNames = data.split("}");
 
+// Logger.log("splitnames is: " + typeof(splitNames));
+Logger.log("splitNames length is: " + splitNames.length);
+
+// Logger.log("splitNames are: " + splitNames);
+  
 for(var [key,val] in splitNames){
 
+/*
 Logger.log("split names for " + splitNames[key]);
 
-  var entry = splitNames[key].split(":");
-  Logger.log("entry is: " + entry);
-  var name = entry.split(":")[1].split(",")[0].slice(1, -1);
-  Logger.log("name is: " + name);
-  var facebookURL = entry.split(":")[3].slice(2, -2);
-  Logger.log("facebookURL is: " + facebookURL);
-  names.push(name);
-  facebookURLs.push(facebookURL);
+
+Logger.log("key is: " + key);
+Logger.log("val is: " + val);
+*/  
+ 
+var entry = splitNames[key];
+
+var splitEntry = entry.split("facebookURL");
+// Logger.log("typeof splitEntry[0]: " + typeof(splitEntry[0]));
+// Logger.log("splitEntry[0] is: " + splitEntry[0]);
+var dirtyName = splitEntry[0];
+// Logger.log("dirtyName is: " + dirtyName); 
+
+var name = dirtyName.split(":")[1].slice(1, -3);
+// Logger.log("name is: " + name);
+
+// Logger.log("entry is: " + entry);
+var facebookURL = entry.split(":")[3].slice(2, -2);
+// Logger.log("facebookURL is: " + facebookURL);
+
+// Logger.log("pushing to names");  
+names.push(name);
+  
+// Logger.log("pushing to facebookURL");
+facebookURLs.push(facebookURL);
+
   
 }
 
-  Logger.log("names are: " + names);
-  Logger.log("facebookURLs: " + facebookURLs);
+Logger.log("names are: ");
+Logger.log(names);
 
-var sheetNames = names.map(function (el) {
+/*  
+Logger.log("facebookURLs are: ");
+Logger.log(facebookURLs);
+
+var sheetData = names.map(function (el) {
      el.replace("}", "");
      
      return [el];
@@ -50,12 +79,12 @@ Logger.log("2d array of names are:");
 Logger.log(sheetNames);
 Logger.log("Length of sheetNames: " + sheetNames.length);
 Logger.log("Now trying to write to sheet");
-*/
+
 
                                
 var range = sheet.getRange(1, 1, sheetNames.length, 1);
  
 range.setValues(sheetNames);
 
-  
+  */
 }
