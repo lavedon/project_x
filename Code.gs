@@ -7,44 +7,59 @@ var sheet = ss.getSheets()[0];
                        
   
 var names = [];
-
+var facebookURLs = [];
+var splitNames = {};  
+  
 //Return if null
 if( e == undefined ) {
   Logger.log("no data");
   return HtmlService.createHtmlOutput("need data");
 }
 
-
 var data = JSON.parse(e.postData.contents);
-var splitNames = data.split(",");
+
+  
+var splitNames = data.split("}");
+
+Logger.log("splitNames length is: " + splitNames.length);
 
 
+var i = 0;
+  
 for(var [key,val] in splitNames){
-/*
-  Logger.log("split names for " + splitNames[key]);
-  Logger.log("type of " + typeof(splitNames[key]));
-  
- 
-  
-  
-  Logger.log("spliting the split name " + splitNames[key].split(":")[1].slice(1, -2));
- */
+var entry = splitNames[key];
+var splitEntry = entry.split("facebookURL");
+var dirtyName = splitEntry[0];
+var name = dirtyName.split(":")[1].slice(1, -3);
+var facebookURL = entry.split(":")[3].slice(2, -2);
+i++;
 
-  
-  names.push(splitNames[key].split(":")[1].slice(1, -2));
-  
+names.push(name);
+facebookURLs.push(facebookURL);
+
+// why do I have to do this?
+  if (i == splitNames.length - 1) {
+   break; 
+  }
 
 }
-  
 
-var sheetNames = names.map(function (el) {
+Logger.log("Loop finished.");
+Logger.log("names are: ");
+Logger.log(names);
+
+
+Logger.log("facebookURLs are: ");
+Logger.log(facebookURLs);
+
+var sheetData = names.map(function (el) {
      el.replace("}", "");
      
      return [el];
   });
 
 
-    
+/*    
 Logger.log("2d array of names are:");
 Logger.log(sheetNames);
 Logger.log("Length of sheetNames: " + sheetNames.length);
@@ -56,5 +71,5 @@ var range = sheet.getRange(1, 1, sheetNames.length, 1);
  
 range.setValues(sheetNames);
 
-  
+  */
 }
