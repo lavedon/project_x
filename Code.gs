@@ -1,3 +1,16 @@
+function zip() {
+    var args = [].slice.call(arguments);
+    var longest = args.reduce(function(a,b){
+        return a.length>b.length ? a : b
+    }, []);
+
+    return longest.map(function(_,i){
+        return args.map(function(array){return array[i]})
+    });
+}
+
+
+
 function doPost(e) {
 // If you do not specify a sheet within the spreadsheet only a1notation will work in getRange
 var ss = SpreadsheetApp.openById("1HVbmbCTf3TtT1_PQw5vNi7lCZhRjaW9SYWn8ha4yK90");
@@ -45,31 +58,20 @@ facebookURLs.push(facebookURL);
 }
 
 Logger.log("Loop finished.");
-Logger.log("names are: ");
-Logger.log(names);
 
 
-Logger.log("facebookURLs are: ");
-Logger.log(facebookURLs);
 
-var sheetData = names.map(function (el) {
-     el.replace("}", "");
-     
-     return [el];
-  });
+var sheetArray = zip(names, facebookURLs);
 
 
-/*    
 Logger.log("2d array of names are:");
-Logger.log(sheetNames);
-Logger.log("Length of sheetNames: " + sheetNames.length);
+Logger.log(sheetArray);
+Logger.log("Length of sheetArray: " + sheetArray.length);
 Logger.log("Now trying to write to sheet");
 
-
                                
-var range = sheet.getRange(1, 1, sheetNames.length, 1);
+var range = sheet.getRange(1, 1, sheetArray.length, 2);
  
-range.setValues(sheetNames);
+range.setValues(sheetArray);
 
-  */
 }
