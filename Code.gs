@@ -8,6 +8,7 @@ var sheet = ss.getSheets()[0];
   
 var names = [];
 var facebookURLs = [];
+var splitNames = {};  
   
 //Return if null
 if( e == undefined ) {
@@ -15,55 +16,39 @@ if( e == undefined ) {
   return HtmlService.createHtmlOutput("need data");
 }
 
-
 var data = JSON.parse(e.postData.contents);
-// Logger.log("data is: " + data);
+
   
 var splitNames = data.split("}");
 
-// Logger.log("splitnames is: " + typeof(splitNames));
 Logger.log("splitNames length is: " + splitNames.length);
 
-// Logger.log("splitNames are: " + splitNames);
+
+var i = 0;
   
 for(var [key,val] in splitNames){
-
-/*
-Logger.log("split names for " + splitNames[key]);
-
-
-Logger.log("key is: " + key);
-Logger.log("val is: " + val);
-*/  
- 
 var entry = splitNames[key];
-
 var splitEntry = entry.split("facebookURL");
-// Logger.log("typeof splitEntry[0]: " + typeof(splitEntry[0]));
-// Logger.log("splitEntry[0] is: " + splitEntry[0]);
 var dirtyName = splitEntry[0];
-// Logger.log("dirtyName is: " + dirtyName); 
-
 var name = dirtyName.split(":")[1].slice(1, -3);
-// Logger.log("name is: " + name);
-
-// Logger.log("entry is: " + entry);
 var facebookURL = entry.split(":")[3].slice(2, -2);
-// Logger.log("facebookURL is: " + facebookURL);
+i++;
 
-// Logger.log("pushing to names");  
 names.push(name);
-  
-// Logger.log("pushing to facebookURL");
 facebookURLs.push(facebookURL);
 
-  
+// why do I have to do this?
+  if (i == splitNames.length - 1) {
+   break; 
+  }
+
 }
 
+Logger.log("Loop finished.");
 Logger.log("names are: ");
 Logger.log(names);
 
-/*  
+
 Logger.log("facebookURLs are: ");
 Logger.log(facebookURLs);
 
