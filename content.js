@@ -46,7 +46,7 @@ async function grabResults() {
     for (let i = 0; i < profiles.length; i++) {
         let name = profiles[i].getElementsByTagName("a")[0].innerText;
         let dirtyFacebookURL = profiles[i].querySelector("a").getAttribute("href");
-        let facebookURL = dirtyFacebookURL.match(/.+?(?=\?)/);
+        let facebookURL = dirtyFacebookURL.match(/.+?(?=\&)/);
         data.push({name, facebookURL});
     }
 
