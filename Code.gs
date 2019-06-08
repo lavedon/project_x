@@ -7,7 +7,8 @@ var sheet = ss.getSheets()[0];
                        
   
 var names = [];
-
+var facebookURLs = [];
+  
 //Return if null
 if( e == undefined ) {
   Logger.log("no data");
@@ -16,26 +17,26 @@ if( e == undefined ) {
 
 
 var data = JSON.parse(e.postData.contents);
-var splitNames = data.split(",");
-
+  
+var splitNames = data.split("}");
 
 for(var [key,val] in splitNames){
-/*
-  Logger.log("split names for " + splitNames[key]);
-  Logger.log("type of " + typeof(splitNames[key]));
-  
- 
-  
-  
-  Logger.log("spliting the split name " + splitNames[key].split(":")[1].slice(1, -2));
- */
 
-  
-  names.push(splitNames[key].split(":")[1].slice(1, -2));
-  
+Logger.log("split names for " + splitNames[key]);
 
+  var entry = splitNames[key].split(":");
+  Logger.log("entry is: " + entry);
+  var name = entry.split(":")[1].split(",")[0].slice(1, -1);
+  Logger.log("name is: " + name);
+  var facebookURL = entry.split(":")[3].slice(2, -2);
+  Logger.log("facebookURL is: " + facebookURL);
+  names.push(name);
+  facebookURLs.push(facebookURL);
+  
 }
-  
+
+  Logger.log("names are: " + names);
+  Logger.log("facebookURLs: " + facebookURLs);
 
 var sheetNames = names.map(function (el) {
      el.replace("}", "");
@@ -44,12 +45,12 @@ var sheetNames = names.map(function (el) {
   });
 
 
-    
+/*    
 Logger.log("2d array of names are:");
 Logger.log(sheetNames);
 Logger.log("Length of sheetNames: " + sheetNames.length);
 Logger.log("Now trying to write to sheet");
-
+*/
 
                                
 var range = sheet.getRange(1, 1, sheetNames.length, 1);
